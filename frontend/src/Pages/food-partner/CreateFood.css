@@ -1,0 +1,137 @@
+.create-food-container {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 32px 24px;
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 50%, #ff6e7f 100%);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  font-family: 'Segoe UI', Arial, sans-serif;
+  animation: fadeInUp 0.8s cubic-bezier(.23,1.01,.32,1) both;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.create-food-container h2 {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #ff5722;
+  font-weight: 700;
+  letter-spacing: 1px;
+  animation: fadeIn 1s 0.2s both;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.create-food-form label {
+  display: block;
+  margin-bottom: 18px;
+  font-size: 1rem;
+  color: #333;
+  animation: fadeIn 1s 0.4s both;
+}
+
+.create-food-form input,
+.create-food-form textarea {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 6px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.3s;
+  background: #fafafa;
+  animation: fadeIn 1s 0.6s both;
+}
+
+.create-food-form input:focus,
+.create-food-form textarea:focus {
+  border-color: #ff5722;
+  outline: none;
+  box-shadow: 0 0 8px rgba(255,87,34,0.15);
+  animation: pulse 0.4s;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 rgba(255,87,34,0.15); }
+  50% { box-shadow: 0 0 12px rgba(255,87,34,0.25); }
+  100% { box-shadow: 0 0 8px rgba(255,87,34,0.15); }
+}
+
+.create-food-form textarea {
+  resize: vertical;
+  min-height: 60px;
+  max-height: 120px;
+}
+
+.create-food-form button {
+  width: 100%;
+  padding: 12px 0;
+  background: linear-gradient(90deg, #ff5722 60%, #ff9800 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 12px;
+  box-shadow: 0 2px 8px rgba(255,87,34,0.08);
+  transition: background 0.2s, transform 0.2s;
+  animation: fadeIn 1s 0.8s both;
+}
+
+.create-food-form button:hover {
+  background: linear-gradient(90deg, #ff9800 60%, #ff5722 100%);
+  transform: scale(1.04);
+}
+
+.create-food-form button:active {
+  transform: scale(0.98);
+}
+
+/* Loader overlay */
+.loader-overlay {
+  position: absolute;
+  inset: 0; /* top:0; right:0; bottom:0; left:0; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.6);
+  border-radius: 16px;
+}
+
+.loader {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 6px solid rgba(255,87,34,0.12);
+  border-top-color: #ff5722;
+  animation: spin 0.9s linear infinite;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* disabled button */
+.create-food-form button.disabled,
+.create-food-form button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ensure form container is positioned for absolute overlay */
+.create-food-container { position: relative; }

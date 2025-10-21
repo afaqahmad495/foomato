@@ -1,0 +1,332 @@
+/* Add these styles to your App.css file */
+
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.auth-form-container {
+  width: 100%;
+  max-width: 450px;
+  padding: 30px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.auth-form-container h2 {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #555;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.auth-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #ff5a5f;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.auth-button:hover {
+  background-color: #ff4146;
+}
+
+.auth-redirect {
+  text-align: center;
+  margin-top: 20px;
+  color: #666;
+}
+
+.auth-redirect a {
+  color: #ff5a5f;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-redirect a:hover {
+  text-decoration: underline;
+}
+
+/* Food Partner Profile Styles - Responsive & Attractive */
+.profile-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.profile-header {
+  background: linear-gradient(135deg, #3a1c71, #d76d77, #ffaf7b);
+  border-radius: 12px;
+  padding: 25px;
+  color: white;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.profile-header-top {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile-logo {
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(45deg, #43cea2, #185a9d);
+  border-radius: 50%;
+  margin-right: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  border: 4px solid rgba(255, 255, 255, 0.8);
+  flex-shrink: 0;
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.business-name {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.business-address {
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+.profile-stats {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  padding: 15px;
+  backdrop-filter: blur(5px);
+}
+
+.stat-item {
+  flex: 1;
+  text-align: center;
+}
+
+.stat-divider {
+  width: 1px;
+  height: 40px;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.8;
+}
+
+.profile-content {
+  background-color: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.gallery-title {
+  font-size: 22px;
+  margin-bottom: 20px;
+  color: #333;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.gallery-title:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(to right, #43cea2, #185a9d);
+}
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.gallery-item {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.gallery-item-content {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 100%; /* 1:1 Aspect Ratio */
+}
+
+.gallery-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gallery-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  padding: 15px;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gallery-item:hover .gallery-overlay {
+  opacity: 1;
+}
+
+.gallery-item-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.profile-footer {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.action-button {
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 16px;
+}
+
+.action-button.primary {
+  background: linear-gradient(45deg, #43cea2, #185a9d);
+  color: white;
+}
+
+.action-button.secondary {
+  background: white;
+  color: #185a9d;
+  border: 2px solid #185a9d;
+}
+
+.action-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .profile-header-top {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .profile-logo {
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
+  
+  /* Keep 3 columns for videos even on mobile */
+  .video-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px; /* Smaller gap on mobile */
+  }
+  
+  .gallery-item-title {
+    font-size: 12px; /* Smaller font on mobile */
+  }
+  
+  .gallery-overlay {
+    padding: 8px; /* Smaller padding on mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-stats {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .stat-divider {
+    width: 80%;
+    height: 1px;
+  }
+  
+  /* Keep 3 columns for videos even on small mobile */
+  .video-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px; /* Even smaller gap on small mobile */
+  }
+  
+  .profile-footer {
+    flex-direction: column;
+  }
+  
+  .gallery-overlay {
+    padding: 4px; /* Even smaller padding on small mobile */
+  }
+  
+  .gallery-item-title {
+    font-size: 10px; /* Even smaller font on small mobile */
+  }
+}

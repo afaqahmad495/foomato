@@ -1,0 +1,56 @@
+.dashboard-wrap{
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #fff 0%, #fff6f2 100%);
+  padding: 40px 16px;
+}
+
+.dashboard-card{
+  width: 100%;
+  max-width: 920px;
+  background: linear-gradient(180deg, #fff, #fffaf8);
+  border-radius: 14px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+  padding: 36px;
+  text-align: center;
+}
+
+.dashboard-card h1{
+  font-size: 34px;
+  margin: 0 0 6px 0;
+  color: #ff5722;
+}
+
+.tagline{
+  color: #444;
+  margin-bottom: 18px;
+}
+
+.dash-loading{ color: #888; margin: 18px 0; }
+
+.welcome h2, .guest h2{ margin-top: 8px; color: #222; }
+
+.highlights{ list-style: none; padding: 0; margin: 18px 0 24px 0; display: grid; gap: 8px; text-align: left; }
+.highlights li{ background: #fff; border-radius: 8px; padding: 12px; border: 1px solid rgba(0,0,0,0.04); }
+
+.dash-actions{ display: flex; gap: 12px; justify-content: center; margin: 16px 0; }
+
+.btn{ display: inline-block; padding: 10px 18px; border-radius: 10px; text-decoration: none; color: #333; border: 1px solid rgba(0,0,0,0.06); background: #fff; }
+.btn.primary{ background: linear-gradient(90deg,#ff6e7f,#ff9a66); color: white; border: none; box-shadow: 0 8px 26px rgba(255,110,127,0.12); }
+
+.note{ color: #666; margin-top: 12px; }
+
+.dash-footer{ margin-top: 20px; color: #999; font-size: 13px }
+
+.business-section{ margin-top: 14px; padding-top: 12px; border-top: 1px dashed rgba(0,0,0,0.06); }
+.business-section h3{ margin: 8px 0 6px 0; font-size: 18px; }
+.business-section .small{ color: #555; margin-bottom: 10px; }
+
+@media (max-width: 560px){
+  .dashboard-card{ padding: 22px; }
+  .dashboard-card h1{ font-size: 28px }
+  .highlights{ font-size: 14px }
+  .btn{ padding: 10px 14px }
+}
