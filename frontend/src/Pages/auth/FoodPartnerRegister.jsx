@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../App.css';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { api } from '../../lib/api';
 
 const FoodPartnerRegister = () => {
   const [formData, setFormData] = useState({
@@ -30,9 +30,7 @@ const FoodPartnerRegister = () => {
   };
   const navigate = useNavigate();
   const submit = async ()=>{
-    const response = await axios.post('http://localhost:3000/api/auth/foodpartner/register', formData,
-      {withCredentials: true}
-    );
+    const response = await api.post('/api/auth/foodpartner/register', formData);
    console.log(response.data) 
    navigate('/foodpartner/login')
   } 

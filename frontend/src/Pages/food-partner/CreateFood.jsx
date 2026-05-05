@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './CreateFood.css';
-import axios from 'axios';
+import { api } from '../../lib/api';
 import { useNavigate } from 'react-router-dom';
 
 const CreateFood = () => {
@@ -9,6 +9,7 @@ const CreateFood = () => {
 
   const [food, setFood] = useState({
     name: '',
+    price: '',
     description: '',
     video: null
   });
@@ -30,12 +31,13 @@ const CreateFood = () => {
     // Add submit logic here (e.g., send food data and video file to backend)
     const formData = new FormData();
     formData.append('name', food.name);
+    formData.append('price', food.price);
     formData.append('description', food.description);
     formData.append('video', food.video);
 
     try {
       setLoading(true);
-      const response = await axios.post('http://localhost:3000/api/food', formData, { withCredentials: true });
+      const response = await api.post('/api/food', formData);
       console.log(response.data);
       alert('Food item created successfully!');
       navigate('/profile-foodpartner');
@@ -61,6 +63,19 @@ const CreateFood = () => {
             onChange={handleChange}
             required
             placeholder="Enter food name"
+          />
+        </label>
+        <label>
+          Price (Rs)
+          <input
+            type="number"
+            name="price"
+            value={food.price}
+            onChange={handleChange}
+            required
+            min="0"
+            step="1"
+            placeholder="Enter price"
           />
         </label>
         <label>

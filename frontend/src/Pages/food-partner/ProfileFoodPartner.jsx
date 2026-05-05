@@ -1,16 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import '../../App.css';
-import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Link }  from 'react-router-dom'
+import { api } from '../../lib/api';
 
-const ProfileFoodPartner = (req,res) => {
+function formatCompact(value) {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return '0';
+  const abs = Math.abs(n);
+  if (abs < 1000) return String(Math.trunc(n));
+  if (abs < 1_000_000) return `${Math.round((n / 1000) * 10) / 10}K`.replace('.0K', 'K');
+  if (abs < 1_000_000_000) return `${Math.round((n / 1_000_000) * 10) / 10}M`.replace('.0M', 'M');
+  return `${Math.round((n / 1_000_000_000) * 10) / 10}B`.replace('.0B', 'B');
+}
+
+const ProfileFoodPartner = () => {
   
   const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
   const [videos, setVideos] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true); 
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef(null);
   
   useEffect(() => {
     // Fetch food partner profile data
@@ -19,9 +31,7 @@ const ProfileFoodPartner = (req,res) => {
       
       
       try {
-        const response = await axios.get(`http://localhost:3000/api/food-partner/profile-foodPartner`, {
-          withCredentials: true
-        });
+        const response = await api.get(`/api/food-partner/profile-foodPartner`);
         
         setProfile(response.data.foodPartner);
         setVideos(response.data.foodPartner.foodItems);
@@ -59,13 +69,69 @@ const ProfileFoodPartner = (req,res) => {
       </div>
     );
   }
+
+  const stats = profile?.stats || {};
+  const statsItems = [
+    { label: 'Reels', value: stats.reelsCount ?? (videos?.length || 0) },
+    { label: 'Total Meals', value: stats.totalMeals ?? 0 },
+    { label: 'Customers Served', value: stats.customersServed ?? 0 },
+  ];
+
+  const uploadProfilePic = async (file) => {
+    if (!file) return;
+    const form = new FormData();
+    form.append('photo', file);
+    setUploading(true);
+    setError(null);
+    try {
+      const res = await api.patch('/api/food-partner/profile-photo', form);
+      const fp = res?.data?.foodPartner;
+      if (fp) setProfile(prev => ({ ...(prev || {}), ...fp }));
+    } catch (e) {
+      setError(e?.response?.data?.message || 'Failed to upload profile photo');
+    } finally {
+      setUploading(false);
+    }
+  };
   
   return (
     <div className="profile-container">
       <div className="profile-header">
         <div className="profile-header-top">
-          <div className="profile-logo">
-            {/* Restaurant logo will go here */}
+          <div className="profile-photo-wrap">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              disabled={uploading}
+              style={{ display: 'none' }}
+              onChange={(e) => uploadProfilePic(e.target.files?.[0])}
+            />
+
+            <button
+              type="button"
+              className="profile-avatar-btn"
+              onClick={() => fileInputRef.current?.click?.()}
+              disabled={uploading}
+              aria-label="Change profile photo"
+              title="Change profile photo"
+            >
+              <div className="profile-logo">
+                {profile?.profilePic ? (
+                  <img src={profile.profilePic} alt={`${profile?.name || 'Store'} profile`} />
+                ) : null}
+              </div>
+              <span className="profile-avatar-edit" aria-hidden>✎</span>
+            </button>
+
+            <button
+              className="profile-change-link"
+              type="button"
+              disabled={uploading}
+              onClick={() => fileInputRef.current?.click?.()}
+            >
+              {uploading ? 'Uploading...' : 'Change photo'}
+            </button>
           </div>
           <div className="profile-info">
             <h2 className="business-name">{profile?.name || 'Tasty Delights'}</h2>
@@ -73,15 +139,15 @@ const ProfileFoodPartner = (req,res) => {
           </div>
         </div>
         <div className="profile-stats">
-          <div className="stat-item">
-            <div className="stat-value">43</div>
-            <div className="stat-label">Total Meals</div>
-          </div>
-          <div className="stat-divider"></div>
-          <div className="stat-item">
-            <div className="stat-value">15K</div>
-            <div className="stat-label">Customers Served</div>
-          </div>
+          {statsItems.map((s, idx) => (
+            <React.Fragment key={s.label}>
+              <div className="stat-item">
+                <div className="stat-value">{formatCompact(s.value)}</div>
+                <div className="stat-label">{s.label}</div>
+              </div>
+              {idx !== statsItems.length - 1 ? <div className="stat-divider" /> : null}
+            </React.Fragment>
+          ))}
         </div>
       </div>
       
@@ -98,7 +164,7 @@ const ProfileFoodPartner = (req,res) => {
                   className="gallery-image" muted autoPlay
                 />
                 <div className="gallery-overlay">
-                  <span className="gallery-item-title">{v.title}</span>
+                  <span className="gallery-item-title">{v.name || 'Food Item'}</span>
                 </div>
               </div>
             </div>
@@ -108,7 +174,7 @@ const ProfileFoodPartner = (req,res) => {
       
       <div className="profile-footer">
         <Link className="action-button primary" to="/create-food">Add New Item</Link>
-        <Link className="action-button secondary"   to="/edit-profile">Edit Profile</Link>
+        <Link className="action-button secondary" to="/partner-orders">Orders</Link>
       </div>
     </div>
   );

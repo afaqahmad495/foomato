@@ -6,23 +6,56 @@ const saveFoodModel = require('../models/saveFood.model');
 const CommentModel = require('../models/comment.model');
 
 const createFood = async (req, res) =>{
+    try {
+        if (!req.body || !req.body.name || !req.body.description) {
+            return res.status(400).json({ message: 'name and description are required' });
+        }
 
-   const fileUploadResult = await storageServices.uploadFile(req.file.buffer, uuidv4())
-    console.log(fileUploadResult)
-    
-    console.log(req.foodPartner);
-    console.log(req.body);
-    
-    const foodItem = await foodModel.create({
-        name: req.body.name,
-        description: req.body.description,
-        video: fileUploadResult.url,
-        foodPartner: req.foodPartner._id
-    })
-    res.status(201).json({message: "food item created",
-        food: foodItem
-    })
-    
+        const priceRaw = req.body.price;
+        const price = Number(priceRaw);
+        if (!Number.isFinite(price) || price < 0) {
+            return res.status(400).json({ message: 'price is required and must be a valid number' });
+        }
+
+        if (!req.file || !req.file.buffer) {
+            return res.status(400).json({ message: 'video file is required' });
+        }
+
+        const fileUploadResult = await storageServices.uploadFile(req.file.buffer, uuidv4());
+
+        const foodItem = await foodModel.create({
+            name: req.body.name,
+            price,
+            description: req.body.description,
+            video: fileUploadResult.url,
+            foodPartner: req.foodPartner._id
+        });
+
+        return res.status(201).json({
+            message: "food item created",
+            food: foodItem
+        });
+    } catch (err) {
+        console.error('createFood error:', { code: err?.code, message: err?.message });
+        const details = err && err.message ? String(err.message) : undefined;
+        const detailsLower = details ? details.toLowerCase() : '';
+        const isStorageIssue =
+            err?.code === 'IMAGEKIT_NOT_CONFIGURED' ||
+            err?.code === 'IMAGEKIT_UPLOAD_FAILED' ||
+            detailsLower.includes('imagekit') ||
+            detailsLower.includes('authenticated') ||
+            detailsLower.includes('authentication') ||
+            detailsLower.includes('privatekey') ||
+            detailsLower.includes('publickey') ||
+            detailsLower.includes('urlendpoint') ||
+            detailsLower.includes('credentials') ||
+            detailsLower.includes('not configured');
+
+        return res.status(isStorageIssue ? 502 : 500).json({
+            message: isStorageIssue ? 'Storage upload failed (check ImageKit credentials in backend/.env)' : 'Internal server error',
+            ...(process.env.NODE_ENV !== 'production' && details ? { details } : {}),
+        });
+    }
 }
 
 const getUserFood = async (req, res) =>{
@@ -123,6 +156,7 @@ const saveFood = async (req, res) =>{
         if (!deleted) {
             return res.status(404).json({ message: 'Saved food item not found' });
         }
+        return res.status(200).json({ message: 'Food item unsaved' });
     }
 
     

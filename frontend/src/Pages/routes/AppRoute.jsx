@@ -10,6 +10,11 @@ import CreateFood from '../food-partner/CreateFood';
 import ProfileFoodPartner from '../food-partner/ProfileFoodPartner';
 import FoodPartnerProfileForUser from '../components/FoodPartnerProfileForUser';
 import Dashboard from '../genrel/Dashboard';
+import Checkout from '../genrel/Checkout';
+import OrderSuccess from '../genrel/OrderSuccess';
+import Orders from '../genrel/Orders';
+import PartnerOrders from '../food-partner/PartnerOrders';
+import Comments from '../genrel/Comments';
 
 const AppRoute = () => {
   return (
@@ -24,6 +29,11 @@ const AppRoute = () => {
             <Route path='/create-food' element={<CreateFood/>} />
             <Route path='/profile-foodpartner' element={<ProfileFoodPartner/>} />
             <Route path='/profile-foodpartner/:id' element={<FoodPartnerProfileForUser/>} />
+            <Route path='/checkout/:foodId' element={<Checkout/>} />
+            <Route path='/order-success' element={<OrderSuccess/>} />
+            <Route path='/orders' element={<Orders/>} />
+            <Route path='/partner-orders' element={<PartnerOrders/>} />
+            <Route path='/comments/:foodId' element={<Comments/>} />
             <Route path='/' element={<Dashboard/>} />
            
         </Routes>

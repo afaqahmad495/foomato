@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { api } from '../../lib/api';
 
 const Saved = () => {
   const [saved, setSaved] = useState([]);
@@ -10,7 +10,7 @@ const Saved = () => {
   useEffect(() => {
     const fetchSaved = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/api/food/save', { withCredentials: true });
+        const res = await api.get('/api/food/save');
         setSaved(res.data.savedFoods || []);
       } catch (err) {
         console.error('Error fetching saved foods', err);

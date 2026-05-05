@@ -1,16 +1,22 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-const ObjectId = Schema.Types.ObjectId;
+const { createDummyModel } = require('../db/dummy-db');
 
-const favouriteFoodSchema = new Schema({
-    userId: {
-         type: ObjectId,
-          ref: 'User', 
-     },
-    foodId: {
-         type: ObjectId,
-          ref: 'Food',
-     },
-}, { timestamps: true });
+if (process.env.DUMMY_DB === '1') {
+    module.exports = createDummyModel('FavouriteFood');
+} else {
+    const Schema = mongoose.Schema;
+    const ObjectId = Schema.Types.ObjectId;
 
-module.exports = mongoose.model('FavouriteFood', favouriteFoodSchema);
+    const favouriteFoodSchema = new Schema({
+        userId: {
+            type: ObjectId,
+            ref: 'User',
+        },
+        foodId: {
+            type: ObjectId,
+            ref: 'Food',
+        },
+    }, { timestamps: true });
+
+    module.exports = mongoose.model('FavouriteFood', favouriteFoodSchema);
+}

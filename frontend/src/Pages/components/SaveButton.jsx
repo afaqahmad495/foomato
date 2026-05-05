@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaBookmark } from 'react-icons/fa';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { api } from '../../lib/api';
 
 
 
@@ -30,7 +30,7 @@ const SaveButton = ({ initialSaved = false, onToggle = () => {}, disabled = fals
 
     try {
       // call backend to toggle saved state
-      await axios.post(`http://localhost:3000/api/food/save/${foodId}`, {}, { withCredentials: true });
+      await api.post(`/api/food/save/${foodId}`);
     } catch (err) {
       console.error('Error toggling save:', err);
       // revert optimistic update on error

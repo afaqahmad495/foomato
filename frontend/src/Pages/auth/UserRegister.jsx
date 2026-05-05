@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../App.css';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { api } from '../../lib/api';
 
 
 
@@ -35,9 +35,7 @@ const UserRegister = () => {
      const navigate = useNavigate();
     const submit = async () => {
       try {
-        const response = await axios.post('http://localhost:3000/api/auth/user/register', formData,
-          {withCredentials: true}
-        )
+        const response = await api.post('/api/auth/user/register', formData)
         console.log(response.data.message)
         navigate('/user/login');
         if(response.data.success){

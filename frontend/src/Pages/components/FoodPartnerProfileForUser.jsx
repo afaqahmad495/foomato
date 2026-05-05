@@ -1,10 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import '../../App.css';
-import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Link }  from 'react-router-dom'
+import { api } from '../../lib/api';
 
-const ProfileFoodPartner = (req,res) => {
+function formatCompact(value) {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return '0';
+  const abs = Math.abs(n);
+  if (abs < 1000) return String(Math.trunc(n));
+  if (abs < 1_000_000) return `${Math.round((n / 1000) * 10) / 10}K`.replace('.0K', 'K');
+  if (abs < 1_000_000_000) return `${Math.round((n / 1_000_000) * 10) / 10}M`.replace('.0M', 'M');
+  return `${Math.round((n / 1_000_000_000) * 10) / 10}B`.replace('.0B', 'B');
+}
+
+const ProfileFoodPartner = () => {
   
   const {id} = useParams();  
   const navigate = useNavigate();
@@ -20,9 +30,7 @@ const ProfileFoodPartner = (req,res) => {
       
       
       try {
-        const response = await axios.get(`http://localhost:3000/api/food-partner/profile-foodPartner/${id}`, {
-          withCredentials: true
-        });
+        const response = await api.get(`/api/food-partner/profile-foodPartner/${id}`);
         
         setProfile(response.data.foodPartner);
         setVideos(response.data.foodPartner.foodItems);
@@ -60,13 +68,22 @@ const ProfileFoodPartner = (req,res) => {
       </div>
     );
   }
+
+  const stats = profile?.stats || {};
+  const statsItems = [
+    { label: 'Reels', value: stats.reelsCount ?? (videos?.length || 0) },
+    { label: 'Total Meals', value: stats.totalMeals ?? 0 },
+    { label: 'Customers Served', value: stats.customersServed ?? 0 },
+  ];
   
   return (
     <div className="profile-container">
       <div className="profile-header">
         <div className="profile-header-top">
           <div className="profile-logo">
-            {/* Restaurant logo will go here */}
+            {profile?.profilePic ? (
+              <img src={profile.profilePic} alt={`${profile?.name || 'Store'} profile`} />
+            ) : null}
           </div>
           <div className="profile-info">
             <h2 className="business-name">{profile?.name || 'Tasty Delights'}</h2>
@@ -74,15 +91,15 @@ const ProfileFoodPartner = (req,res) => {
           </div>
         </div>
         <div className="profile-stats">
-          <div className="stat-item">
-            <div className="stat-value">43</div>
-            <div className="stat-label">Total Meals</div>
-          </div>
-          <div className="stat-divider"></div>
-          <div className="stat-item">
-            <div className="stat-value">15K</div>
-            <div className="stat-label">Customers Served</div>
-          </div>
+          {statsItems.map((s, idx) => (
+            <React.Fragment key={s.label}>
+              <div className="stat-item">
+                <div className="stat-value">{formatCompact(s.value)}</div>
+                <div className="stat-label">{s.label}</div>
+              </div>
+              {idx !== statsItems.length - 1 ? <div className="stat-divider" /> : null}
+            </React.Fragment>
+          ))}
         </div>
       </div>
       
@@ -99,7 +116,7 @@ const ProfileFoodPartner = (req,res) => {
                   className="gallery-image" muted autoPlay
                 />
                 <div className="gallery-overlay">
-                  <span className="gallery-item-title">{v.title}</span>
+                  <span className="gallery-item-title">{v.name || 'Food Item'}</span>
                 </div>
               </div>
             </div>

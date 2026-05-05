@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../App.css';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { api } from '../../lib/api';
 
 const FoodPartnerLogin = () => {
   const [formData, setFormData] = useState({
@@ -31,11 +31,7 @@ const FoodPartnerLogin = () => {
     setError('');
     setLoading(true);
     try {
-      const response = await axios.post(
-        'http://localhost:3000/api/auth/foodpartner/login',
-        formData,
-        { withCredentials: true }
-      );
+      const response = await api.post('/api/auth/foodpartner/login', formData);
       alert(response.data.message);
       navigate('/profile-foodpartner/');
     } catch (err) {

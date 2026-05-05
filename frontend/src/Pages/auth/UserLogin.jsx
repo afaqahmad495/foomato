@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios'
 import '../../App.css';
-import {useNavigate} from 'react-router-dom'
+import {useLocation, useNavigate} from 'react-router-dom'
+import { api } from '../../lib/api';
 
 const UserLogin = () => {
   const [formData, setFormData] = useState({
@@ -24,15 +24,23 @@ const UserLogin = () => {
     // Add API call for login here
   };
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const nextPath = (() => {
+    const params = new URLSearchParams(location.search || '');
+    const next = params.get('next');
+    return next && next.startsWith('/') ? next : '/home';
+  })();
+
   const submit = async ()=>{
-    const response = await  axios.post("http://localhost:3000/api/auth/user/login",formData,{withCredentials: true})
-    console.log(response.data)
-    if(response.data.success){
-      alert('Login successful');
-    }else{
-      alert(response.data.message);
+    try {
+      const response = await api.post("/api/auth/user/login",formData)
+      console.log(response.data)
+      alert(response.data?.message || 'Login successful');
+      navigate(nextPath);
+    } catch (err) {
+      alert(err?.response?.data?.message || 'Invalid email or password');
     }
-    navigate('/home');
   }
 
   return (

@@ -1,4 +1,9 @@
 const mongoose = require('mongoose');
+const { createDummyModel } = require('../db/dummy-db');
+
+if (process.env.DUMMY_DB === '1') {
+    module.exports = createDummyModel('FoodPartner');
+} else {
 
 const foodPartnerSchema = new mongoose.Schema({
     name: {
@@ -28,6 +33,10 @@ const foodPartnerSchema = new mongoose.Schema({
         type: String,
         required: true,
         
+    },
+    profilePic: {
+        type: String,
+        default: '',
     }
 }, {
     timestamps: true
@@ -36,3 +45,4 @@ const foodPartnerSchema = new mongoose.Schema({
 const FoodPartner = mongoose.model('FoodPartner', foodPartnerSchema);
 
 module.exports = FoodPartner;
+}

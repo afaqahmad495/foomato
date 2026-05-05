@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './Dashboard.css';
+import { api } from '../../lib/api';
 
 const FoodBlob = () => (
   <svg className="food-blob" width="220" height="220" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
@@ -29,7 +29,7 @@ const Dashboard = () => {
     let mounted = true;
     const fetchUser = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/api/auth/me', { withCredentials: true });
+        const res = await api.get('/api/auth/me');
         if (mounted && res?.data) setUser(res.data.user || res.data);
       } catch (err) {
         if (mounted) setUser(null);
