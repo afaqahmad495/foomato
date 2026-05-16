@@ -35,7 +35,12 @@ const UserLogin = () => {
   const submit = async ()=>{
     try {
       const response = await api.post("/api/auth/user/login",formData)
-      console.log(response.data)
+      const token = response.data?.user?.token;
+      const userId = response.data?.user?.id;
+      if (token) localStorage.setItem('auth_token', token);
+      localStorage.setItem('auth_role', 'user');
+      if (userId) localStorage.setItem('userId', String(userId));
+
       alert(response.data?.message || 'Login successful');
       navigate(nextPath);
     } catch (err) {
@@ -72,6 +77,9 @@ const UserLogin = () => {
           </div>
           <button type="submit" onClick={submit} className="auth-button">Login</button>
         </form>
+        <p className="auth-redirect">
+          <Link to="/user/forgot-password">Forgot password?</Link>
+        </p>
         <p className="auth-redirect">
           Don't have an account? <Link to="/user/register">Register here</Link>
         </p>

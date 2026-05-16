@@ -1,0 +1,8 @@
+{
+  "appId": "com.foomato.app",
+  "appName": "Foomato",
+  "webDir": "dist",
+  "server": {
+    "cleartext": true
+  }
+}

@@ -32,6 +32,11 @@ const FoodPartnerLogin = () => {
     setLoading(true);
     try {
       const response = await api.post('/api/auth/foodpartner/login', formData);
+      const token = response.data?.foodPartner?.token;
+      const partnerId = response.data?.foodPartner?.id;
+      if (token) localStorage.setItem('auth_token', token);
+      localStorage.setItem('auth_role', 'foodPartner');
+      if (partnerId) localStorage.setItem('foodPartnerId', String(partnerId));
       alert(response.data.message);
       navigate('/profile-foodpartner/');
     } catch (err) {
@@ -74,6 +79,9 @@ const FoodPartnerLogin = () => {
           </div>
           <button type="submit" onClick={submit} className="auth-button">Login</button>
         </form>
+        <p className="auth-redirect">
+          <Link to="/foodpartner/forgot-password">Forgot password?</Link>
+        </p>
         <p className="auth-redirect">
           Don't have an account? <Link to="/foodpartner/register">Register here</Link>
         </p>
