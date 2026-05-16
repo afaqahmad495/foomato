@@ -1,5 +1,5 @@
-import { useState } from 'react'
 import AppRoute from './Pages/routes/AppRoute';
+import ChatBot from './components/ChatBot';
 
 function App() {
   
@@ -7,6 +7,7 @@ function App() {
   return (
     <>
       <AppRoute/>
+      <ChatBot />
     </>
   )
 }

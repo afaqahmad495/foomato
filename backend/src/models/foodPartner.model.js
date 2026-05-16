@@ -32,7 +32,12 @@ const foodPartnerSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        
+    },
+    passwordResetToken: {
+        type: String,
+    },
+    passwordResetExpires: {
+        type: Date,
     },
     profilePic: {
         type: String,

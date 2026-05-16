@@ -6,7 +6,7 @@ import { api } from '../../lib/api';
 
 function formatCompact(value) {
   const n = Number(value);
-  if (!Number.isFinite(n)) return '0';
+  if (!Number.isFinite(n)) return '0'; 
   const abs = Math.abs(n);
   if (abs < 1000) return String(Math.trunc(n));
   if (abs < 1_000_000) return `${Math.round((n / 1000) * 10) / 10}K`.replace('.0K', 'K');

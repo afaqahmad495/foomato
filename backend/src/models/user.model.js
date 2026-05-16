@@ -19,7 +19,12 @@ if (process.env.DUMMY_DB === '1') {
   },
   password: {
     type: String,
-    
+  },
+  passwordResetToken: {
+    type: String,
+  },
+  passwordResetExpires: {
+    type: Date,
   },
   phone: {
     type: String

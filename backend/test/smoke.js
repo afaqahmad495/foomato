@@ -31,6 +31,36 @@ async function main() {
   const baseUrl = `http://127.0.0.1:${server.address().port}`;
 
   try {
+    // AI health check should be available
+    {
+      const res = await fetch(`${baseUrl}/api/ai/health`, { method: 'GET' });
+      const body = await json(res);
+      assert.equal(res.status, 200, `ai health: ${JSON.stringify(body)}`);
+      assert.equal(body && body.success, true);
+      assert.ok(Array.isArray(body.features), 'ai health features should be an array');
+    }
+
+    // AI chatbot should respond and persist history (does not require external models)
+    {
+      const userId = 'smoke-user-1';
+      const res = await fetch(`${baseUrl}/api/ai/chatbot/message`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ message: 'hello', userId }),
+      });
+      const body = await json(res);
+      assert.equal(res.status, 200, `chatbot message: ${JSON.stringify(body)}`);
+      assert.equal(body && body.success, true);
+      assert.ok(typeof body.botResponse === 'string' && body.botResponse.length > 0, 'botResponse missing');
+
+      const historyRes = await fetch(`${baseUrl}/api/ai/chatbot/history/${userId}`, { method: 'GET' });
+      const historyBody = await json(historyRes);
+      assert.equal(historyRes.status, 200, `chatbot history: ${JSON.stringify(historyBody)}`);
+      assert.equal(historyBody && historyBody.success, true);
+      assert.ok(Array.isArray(historyBody.messages), 'chatbot history messages should be an array');
+      assert.ok(historyBody.messages.length >= 2, 'chatbot history should have at least 2 messages');
+    }
+
     // unauthenticated access should fail
     {
       const res = await fetch(`${baseUrl}/api/food/get-food-item`, { method: 'GET' });
